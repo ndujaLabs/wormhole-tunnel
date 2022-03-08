@@ -16,8 +16,12 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
   using BytesLib for bytes;
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-//    console.log(bytes32(type(IWormholeTunnel).interfaceId));
+    //    console.log(bytes32(type(IWormholeTunnel).interfaceId));
     return interfaceId == type(IWormholeTunnel).interfaceId || super.supportsInterface(interfaceId);
+  }
+
+  function getInterfaceId() public view virtual  returns (bytes4) {
+    return type(IWormholeTunnel).interfaceId;
   }
 
   function wormholeInit(uint16 chainId, address wormhole) public override onlyOwner {
@@ -39,17 +43,17 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
     require(valid, reason);
     require(_verifyContractVM(vm), "invalid emitter");
 
-    Transfer memory transfer = _parseTransfer(vm.payload);
+    WTransfer memory wTransfer = _parseTransfer(vm.payload);
 
     require(!isTransferCompleted(vm.hash), "transfer already completed");
     _setTransferCompleted(vm.hash);
 
-    require(transfer.toChain == chainId(), "invalid target chain");
+    require(wTransfer.toChain == chainId(), "invalid target chain");
 
     // transfer bridged NFT to recipient
-    address transferRecipient = address(uint160(uint256(transfer.to)));
+    address transferRecipient = address(uint160(uint256(wTransfer.to)));
 
-    return (transferRecipient, transfer.payload);
+    return (transferRecipient, wTransfer.payload);
   }
 
   function _wormholeTransferWithValue(
@@ -60,16 +64,16 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
     uint256 value
   ) internal returns (uint64 sequence) {
     require(contractByChainId(recipientChain) != 0, "ERC721: recipientChain not allowed");
-    sequence = _logTransfer(Transfer({payload: payload, to: recipient, toChain: recipientChain}), value, nonce);
+    sequence = _logTransfer(WTransfer({payload: payload, to: recipient, toChain: recipientChain}), value, nonce);
     return sequence;
   }
 
   function _logTransfer(
-    Transfer memory transfer,
+    WTransfer memory wTransfer,
     uint256 callValue,
     uint32 nonce
   ) internal returns (uint64 sequence) {
-    bytes memory encoded = _encodeTransfer(transfer);
+    bytes memory encoded = _encodeTransfer(wTransfer);
     sequence = wormhole().publishMessage{value: callValue}(nonce, encoded, 15);
   }
 
@@ -80,29 +84,29 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
     return false;
   }
 
-  function _encodeTransfer(Transfer memory transfer) internal pure returns (bytes memory encoded) {
-    encoded = abi.encodePacked(uint8(1), transfer.payload, transfer.to, transfer.toChain);
+  function _encodeTransfer(WTransfer memory wTransfer) internal pure returns (bytes memory encoded) {
+    encoded = abi.encodePacked(uint8(1), wTransfer.payload, wTransfer.to, wTransfer.toChain);
   }
 
-  function _parseTransfer(bytes memory encoded) internal pure returns (Transfer memory transfer) {
+  function _parseTransfer(bytes memory encoded) internal pure returns (WTransfer memory wTransfer) {
     uint256 index = 0;
 
     uint8 payloadId = encoded.toUint8(index);
     index += 1;
 
-    require(payloadId == 1, "invalid Transfer");
+    require(payloadId == 1, "invalid WTransfer");
 
-    transfer.payload = encoded.toUint256(index);
+    wTransfer.payload = encoded.toUint256(index);
     index += 32;
 
-    transfer.to = encoded.toBytes32(index);
+    wTransfer.to = encoded.toBytes32(index);
     index += 32;
 
-    transfer.toChain = encoded.toUint16(index);
+    wTransfer.toChain = encoded.toUint16(index);
     index += 2;
 
-    require(encoded.length == index, "invalid Transfer");
-    return transfer;
+    require(encoded.length == index, "invalid WTransfer");
+    return wTransfer;
   }
 
   function wormholeTransfer(
@@ -110,7 +114,7 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
     uint16 recipientChain,
     bytes32 recipient,
     uint32 nonce
-  ) public payable override returns (uint64 sequence) {
+  ) public payable override whenNotPaused returns (uint64 sequence) {
     // do something here
     return _wormholeTransferWithValue(tokenID, recipientChain, recipient, nonce, msg.value);
   }

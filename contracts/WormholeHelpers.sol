@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 import "./interfaces/IWormhole.sol";
 
 contract WormholeHelpers {
-  struct Transfer {
+  struct WTransfer {
     // PayloadID uint8 = 1
-    // TokenID of the token, if an NFT; amount if a transfer, etc.
+    // TokenID of the token, if an NFT; amount if a transfer; encoded uint for something else
     uint256 payload;
     // Address of the recipient. Left-zero-padded if shorter than 32 bytes
     bytes32 to;
