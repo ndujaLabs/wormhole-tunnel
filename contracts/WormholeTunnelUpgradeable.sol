@@ -134,18 +134,19 @@ contract WormholeTunnelUpgradeable is
     uint16 recipientChain,
     bytes32 recipient,
     uint32 nonce
-  ) public payable override returns (uint64 sequence) {
+  ) public payable override whenNotPaused returns (uint64 sequence) {
     // TODO Override and do something here before complete
-//    require(_isApprovedOrOwner(_msgSender(), tokenID), "ERC721: transfer caller is not owner nor approved");
-//    _burn(tokenID);
+    //    require(_isApprovedOrOwner(_msgSender(), tokenID), "ERC721: transfer caller is not owner nor approved");
+    //    _burn(tokenID);
     return _wormholeTransferWithValue(tokenID, recipientChain, recipient, nonce, msg.value);
   }
 
   // Complete a transfer from Wormhole
   function wormholeCompleteTransfer(bytes memory encodedVm) public override {
+    // solhint-disable-next-line
     (address to, uint256 payload) = _wormholeCompleteTransfer(encodedVm);
     // TODO Override and do something here
-//    _safeMint(to, payload);
+    //    _safeMint(to, payload);
   }
 
   // convenience helper

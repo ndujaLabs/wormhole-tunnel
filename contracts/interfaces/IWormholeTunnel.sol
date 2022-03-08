@@ -11,7 +11,7 @@ interface IWormholeTunnel {
   function wormholeGetContract(uint16 chainId) external view returns (bytes32);
 
   function wormholeTransfer(
-    uint256 tokenID,
+    uint256 payload,
     uint16 recipientChain,
     bytes32 recipient,
     uint32 nonce

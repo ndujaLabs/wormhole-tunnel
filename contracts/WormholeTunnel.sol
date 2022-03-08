@@ -16,8 +16,12 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
   using BytesLib for bytes;
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-//    console.log(bytes32(type(IWormholeTunnel).interfaceId));
+    //    console.log(bytes32(type(IWormholeTunnel).interfaceId));
     return interfaceId == type(IWormholeTunnel).interfaceId || super.supportsInterface(interfaceId);
+  }
+
+  function getInterfaceId() public view virtual  returns (bytes4) {
+    return type(IWormholeTunnel).interfaceId;
   }
 
   function wormholeInit(uint16 chainId, address wormhole) public override onlyOwner {
@@ -110,7 +114,7 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
     uint16 recipientChain,
     bytes32 recipient,
     uint32 nonce
-  ) public payable override returns (uint64 sequence) {
+  ) public payable override whenNotPaused returns (uint64 sequence) {
     // do something here
     return _wormholeTransferWithValue(tokenID, recipientChain, recipient, nonce, msg.value);
   }
