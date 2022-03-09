@@ -8,9 +8,9 @@ Install with
 npm install @ndujalabs/wormhole-tunnel
 ```
 
-To look at an example of usage, look at [https://github.com/ndujaLabs/everdragons2-core](https://github.com/ndujaLabs/everdragons2-core)
+## API
 
-which uses `wormhole721`, an implemention of `wormhole-tunnel` for NFTs
+coming soon...
 
 ## License
 
@@ -18,5 +18,4 @@ Apache2
 
 ## Copyright
 
-(c) 2021 [Nduja Labs](https://ndujalabs.com) - [https://github.com/ndujaLabs/wormhole-tunnel](https://github.com/ndujaLabs/wormhole-tunnel)
-~~~~~~~~
+Wormhole Tunnel comes from a collaboration between [Wormhole Network](https://wormholenetwork.com/), [Nduja Labs](https://ndujalabs.com) and [Superpower Labs](https://superpower.io) 
