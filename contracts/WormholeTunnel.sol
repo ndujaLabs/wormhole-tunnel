@@ -43,7 +43,10 @@ contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, E
     bytes32 recipient,
     uint32 nonce
   ) public payable override whenNotPaused returns (uint64 sequence) {
-    // do something here
+    // do something here, before launching the transfer
+    // For example, for an ERC721, you can burn the token on the starting chain:
+    //    require(owner(tokenID) == _msgSender(), "ERC721: transfer caller is not the owner");
+    //    _burn(tokenID);
     return _wormholeTransferWithValue(tokenID, recipientChain, recipient, nonce, msg.value);
   }
 
@@ -51,6 +54,8 @@ contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, E
   function wormholeCompleteTransfer(bytes memory encodedVm) public override {
     // solhint-disable-next-line
     (address to, uint256 payload) = _wormholeCompleteTransfer(encodedVm);
-    // do something there
+    // do something here, after receiving the transfer
+    // For example, with an ERC721 you mint a token on the receiving chain
+    //    _safeMint(to, payload);
   }
 }
