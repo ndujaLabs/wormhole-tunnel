@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 import "./interfaces/IWormhole.sol";
 import "./libraries/BytesLib.sol";
-import "./WormholeHelpers.sol";
+import "./WormholeCommon.sol";
 import "./interfaces/IWormholeTunnel.sol";
 
 import "hardhat/console.sol";
 
-contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, ERC165 {
+contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, ERC165 {
   using BytesLib for bytes;
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -20,7 +20,7 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
     return interfaceId == type(IWormholeTunnel).interfaceId || super.supportsInterface(interfaceId);
   }
 
-  function getInterfaceId() public view virtual  returns (bytes4) {
+  function getInterfaceId() public view virtual returns (bytes4) {
     return type(IWormholeTunnel).interfaceId;
   }
 
@@ -35,78 +35,6 @@ contract WormholeTunnel is IWormholeTunnel, WormholeHelpers, Ownable, Pausable, 
 
   function wormholeGetContract(uint16 chainId) public view override returns (bytes32) {
     return contractByChainId(chainId);
-  }
-
-  function _wormholeCompleteTransfer(bytes memory encodedVm) internal returns (address to, uint256 payload) {
-    (IWormhole.VM memory vm, bool valid, string memory reason) = wormhole().parseAndVerifyVM(encodedVm);
-
-    require(valid, reason);
-    require(_verifyContractVM(vm), "invalid emitter");
-
-    WTransfer memory wTransfer = _parseTransfer(vm.payload);
-
-    require(!isTransferCompleted(vm.hash), "transfer already completed");
-    _setTransferCompleted(vm.hash);
-
-    require(wTransfer.toChain == chainId(), "invalid target chain");
-
-    // transfer bridged NFT to recipient
-    address transferRecipient = address(uint160(uint256(wTransfer.to)));
-
-    return (transferRecipient, wTransfer.payload);
-  }
-
-  function _wormholeTransferWithValue(
-    uint256 payload,
-    uint16 recipientChain,
-    bytes32 recipient,
-    uint32 nonce,
-    uint256 value
-  ) internal returns (uint64 sequence) {
-    require(contractByChainId(recipientChain) != 0, "ERC721: recipientChain not allowed");
-    sequence = _logTransfer(WTransfer({payload: payload, to: recipient, toChain: recipientChain}), value, nonce);
-    return sequence;
-  }
-
-  function _logTransfer(
-    WTransfer memory wTransfer,
-    uint256 callValue,
-    uint32 nonce
-  ) internal returns (uint64 sequence) {
-    bytes memory encoded = _encodeTransfer(wTransfer);
-    sequence = wormhole().publishMessage{value: callValue}(nonce, encoded, 15);
-  }
-
-  function _verifyContractVM(IWormhole.VM memory vm) internal view returns (bool) {
-    if (contractByChainId(vm.emitterChainId) == vm.emitterAddress) {
-      return true;
-    }
-    return false;
-  }
-
-  function _encodeTransfer(WTransfer memory wTransfer) internal pure returns (bytes memory encoded) {
-    encoded = abi.encodePacked(uint8(1), wTransfer.payload, wTransfer.to, wTransfer.toChain);
-  }
-
-  function _parseTransfer(bytes memory encoded) internal pure returns (WTransfer memory wTransfer) {
-    uint256 index = 0;
-
-    uint8 payloadId = encoded.toUint8(index);
-    index += 1;
-
-    require(payloadId == 1, "invalid WTransfer");
-
-    wTransfer.payload = encoded.toUint256(index);
-    index += 32;
-
-    wTransfer.to = encoded.toBytes32(index);
-    index += 32;
-
-    wTransfer.toChain = encoded.toUint16(index);
-    index += 2;
-
-    require(encoded.length == index, "invalid WTransfer");
-    return wTransfer;
   }
 
   function wormholeTransfer(
