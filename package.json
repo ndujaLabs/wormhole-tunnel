@@ -14,8 +14,9 @@
     "lint": "prettier --write 'contracts/**/*.sol' && solhint 'contracts/**/*.sol'"
   },
   "authors": [
+    "Evan Gray <egray@jumptrading.com>",
     "Emanuele Cesena <ec@ndujalabs.com>",
-    "Francesco Sullo <fs@ndujalabs.com>"
+    "Francesco Sullo <francesco@superpower.io>"
   ],
   "license": "Apache-2.0",
   "devDependencies": {
