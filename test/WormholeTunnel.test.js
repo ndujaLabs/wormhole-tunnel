@@ -21,5 +21,4 @@ describe("WormholeTunnel", function () {
     expect (await tunnel.getInterfaceId()).equal("0x647bffff")
   })
 
-
 })

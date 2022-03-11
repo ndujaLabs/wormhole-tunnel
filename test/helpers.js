@@ -43,7 +43,6 @@ const Helpers = {
     return contract
   },
 
-
   async signPackedData(
       hash,
       // hardhat account #4, starting from #0

@@ -52,6 +52,7 @@ contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, E
 
   // Complete a transfer from Wormhole
   function wormholeCompleteTransfer(bytes memory encodedVm) public virtual override {
+    require(_msgSender() == address(wormhole()), "caller is not Wormhole");
     // solhint-disable-next-line
     (address to, uint256 payload) = _wormholeCompleteTransfer(encodedVm);
     // do something here, after receiving the transfer
