@@ -54,9 +54,9 @@ contract WormholeTunnelUpgradeable is
     uint32 nonce
   ) public payable override whenNotPaused returns (uint64 sequence) {
     // do something here, before launching the transfer
-    // For example, in Wormhole721, you burn the token on the starting chain:
-    //    require(_isApprovedOrOwner(_msgSender(), tokenID), "ERC721: transfer caller is not owner nor approved");
-    //    _burn(tokenID);
+    // For example, for an ERC721, where payload is the tokenId, you can burn the token on the starting chain:
+    //    require(owner(payload) == _msgSender(), "ERC721: transfer caller is not the owner");
+    //    _burn(payload);
     return _wormholeTransferWithValue(tokenID, recipientChain, recipient, nonce, msg.value);
   }
 
@@ -66,7 +66,8 @@ contract WormholeTunnelUpgradeable is
     (address to, uint256 payload) = _wormholeCompleteTransfer(encodedVm);
     // TODO Override and do something here
     // do something here, after receiving the transfer
-    // For example, in Wormhole721 you mint a token on the receiving chain
+    // For example, with an ERC721, where payload is the tokenId,
+    // you mint a token on the receiving chain
     //    _safeMint(to, payload);
   }
 }

@@ -38,19 +38,25 @@ contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, E
   }
 
   function wormholeTransfer(
-    uint256 tokenID,
+    uint256 payload,
     uint16 recipientChain,
     bytes32 recipient,
     uint32 nonce
-  ) public payable override whenNotPaused returns (uint64 sequence) {
-    // do something here
-    return _wormholeTransferWithValue(tokenID, recipientChain, recipient, nonce, msg.value);
+  ) public payable virtual override whenNotPaused returns (uint64 sequence) {
+    // do something here, before launching the transfer
+    // For example, for an ERC721, where payload is the tokenId, you can burn the token on the starting chain:
+    //    require(owner(payload) == _msgSender(), "ERC721: transfer caller is not the owner");
+    //    _burn(payload);
+    return _wormholeTransferWithValue(payload, recipientChain, recipient, nonce, msg.value);
   }
 
   // Complete a transfer from Wormhole
-  function wormholeCompleteTransfer(bytes memory encodedVm) public override {
+  function wormholeCompleteTransfer(bytes memory encodedVm) public virtual override {
     // solhint-disable-next-line
     (address to, uint256 payload) = _wormholeCompleteTransfer(encodedVm);
-    // do something there
+    // do something here, after receiving the transfer
+    // For example, with an ERC721, where payload is the tokenId,
+    // you mint a token on the receiving chain
+    //    _safeMint(to, payload);
   }
 }
