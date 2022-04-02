@@ -8,8 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "../WormholeTunnel.sol";
 
 contract BridgeableERC721Mock is ERC721, WormholeTunnel {
-
-  uint public nextTokenId = 1;
+  uint256 public nextTokenId = 1;
   bool public isOnPrimaryChain;
 
   constructor(bool isOnPrimaryChain_) ERC721("Cross-chain NFT", "xNFT") {
@@ -17,19 +16,14 @@ contract BridgeableERC721Mock is ERC721, WormholeTunnel {
     isOnPrimaryChain = isOnPrimaryChain_;
   }
 
-//  function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-//  internal
-//  override(ERC721)
-//  {
-//    super._beforeTokenTransfer(from, to, tokenId);
-//  }
+  //  function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+  //  internal
+  //  override(ERC721)
+  //  {
+  //    super._beforeTokenTransfer(from, to, tokenId);
+  //  }
 
-  function supportsInterface(bytes4 interfaceId)
-  public
-  view
-  override(WormholeTunnel, ERC721)
-  returns (bool)
-  {
+  function supportsInterface(bytes4 interfaceId) public view override(WormholeTunnel, ERC721) returns (bool) {
     return super.supportsInterface(interfaceId);
   }
 
@@ -53,14 +47,11 @@ contract BridgeableERC721Mock is ERC721, WormholeTunnel {
   function wormholeCompleteTransfer(bytes memory encodedVm) public virtual override {
     // solhint-disable-next-line
     // here we mock
-    (address to, uint256 payload) = abi.decode(encodedVm, (address, uint));
+    (address to, uint256 payload) = abi.decode(encodedVm, (address, uint256));
     _safeMint(to, payload);
-
   }
 
-  function getFakeEvm(address to, uint256 payload) public view returns(bytes memory) {
+  function getFakeEvm(address to, uint256 payload) public view returns (bytes memory) {
     return abi.encode(to, payload);
   }
-
-
 }

@@ -111,5 +111,4 @@ contract WormholeMock {
   //
   //    vm.payload = encodedVM.slice(index, encodedVM.length - index);
   //  }
-
 }
