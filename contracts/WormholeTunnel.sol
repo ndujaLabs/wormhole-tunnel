@@ -47,6 +47,7 @@ contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, E
     // For example, for an ERC721, where payload is the tokenId, you can burn the token on the starting chain:
     //    require(owner(payload) == _msgSender(), "ERC721: transfer caller is not the owner");
     //    _burn(payload);
+    // (your ERC721 MUST be burnable to work properly)
     return _wormholeTransferWithValue(payload, recipientChain, recipient, nonce, msg.value);
   }
 
