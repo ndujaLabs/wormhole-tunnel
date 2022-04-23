@@ -69,4 +69,6 @@ contract WormholeTunnelUpgradeable is
     // you mint a token on the receiving chain
     //    _safeMint(to, payload);
   }
+
+  uint256[50] private __gap;
 }
