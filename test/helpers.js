@@ -63,7 +63,11 @@ const Helpers = {
   async increaseBlockTimestampBy(offset) {
     await this.ethers.provider.send("evm_increaseTime", [offset])
     await this.ethers.provider.send('evm_mine')
-  }
+  },
+
+  bytes32Address(address) {
+    return "0x000000000000000000000000" + address.replace(/^0x/, "");
+  },
 
 }
 
