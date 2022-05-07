@@ -64,14 +64,21 @@ contract WormholeCommon {
     (IWormhole.VM memory vm, bool valid, string memory reason) = wormhole().parseAndVerifyVM(encodedVm);
 
     require(valid, reason);
-    require(_verifyContractVM(vm), "invalid emitter");
+
+    require(
+      _verifyContractVM(vm),
+      string(abi.encodePacked("invalid emitter; expected ", contractByChainId(vm.emitterChainId), ", got ", vm.emitterAddress))
+    );
 
     WTransfer memory wTransfer = _parseTransfer(vm.payload);
 
     require(!isTransferCompleted(vm.hash), "transfer already completed");
     _setTransferCompleted(vm.hash);
 
-    require(wTransfer.toChain == chainId(), "invalid target chain");
+    require(
+      wTransfer.toChain == chainId(),
+      string(abi.encodePacked("invalid target chain; expected ", chainId(), ", got ", wTransfer.toChain))
+    );
 
     // transfer bridged NFT to recipient
     address transferRecipient = address(uint160(uint256(wTransfer.to)));
