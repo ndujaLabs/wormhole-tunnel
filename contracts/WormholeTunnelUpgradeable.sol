@@ -52,7 +52,7 @@ contract WormholeTunnelUpgradeable is
     uint16 recipientChain,
     bytes32 recipient,
     uint32 nonce
-  ) public virtual payable override whenNotPaused returns (uint64 sequence) {
+  ) public payable virtual override whenNotPaused returns (uint64 sequence) {
     // do something here, before launching the transfer
     // For example, for an ERC721, where payload is the tokenId, you can burn the token on the starting chain:
     //    require(owner(payload) == _msgSender(), "ERC721: transfer caller is not the owner");
