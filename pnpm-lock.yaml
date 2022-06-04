@@ -18,12 +18,14 @@ specifiers:
   solhint: ^3.3.6
   typescript: ^4.7.3
 
+dependencies:
+  '@openzeppelin/contracts': 4.1.0
+  '@openzeppelin/contracts-upgradeable': 4.4.1
+
 devDependencies:
   '@nomiclabs/hardhat-ethers': 2.0.2_ethers@5.3.1+hardhat@2.3.3
   '@nomiclabs/hardhat-etherscan': 3.0.4_hardhat@2.3.3
   '@nomiclabs/hardhat-waffle': 2.0.1_iazmq52xr5xx4zajyw3zs2jgry
-  '@openzeppelin/contracts': 4.1.0
-  '@openzeppelin/contracts-upgradeable': 4.4.1
   '@openzeppelin/hardhat-upgrades': 1.12.0_qtx7yymrs6ywmealrthvzjzp3y
   '@poanet/solidity-flattener': 3.0.6_glob@7.1.7
   chai: 4.3.4
@@ -587,11 +589,11 @@ packages:
 
   /@openzeppelin/contracts-upgradeable/4.4.1:
     resolution: {integrity: sha512-84dUN+TBY42D52BzUc4RHxU4KORs8Ys7dj3nH0WX1QKtlS6rrN45gL+sxaotkPdCqFLVLPyj+kd8GfJ4puxVjA==}
-    dev: true
+    dev: false
 
   /@openzeppelin/contracts/4.1.0:
     resolution: {integrity: sha512-TihZitscnaHNcZgXGj9zDLDyCqjziytB4tMCwXq0XimfWkAjBYyk5/pOsDbbwcavhlc79HhpTEpQcrMnPVa1mw==}
-    dev: true
+    dev: false
 
   /@openzeppelin/hardhat-upgrades/1.12.0_qtx7yymrs6ywmealrthvzjzp3y:
     resolution: {integrity: sha512-C5eOSt01zHKYUaRRDunqCsP5fXLpqFatIEs+NywVKLfVV6LNatugaNiRC4oHT8FF8wnr38uSoWrJJVTRoXUECw==}
