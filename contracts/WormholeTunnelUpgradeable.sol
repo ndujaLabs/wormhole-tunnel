@@ -47,8 +47,6 @@ abstract contract WormholeTunnelUpgradeable is
     return contractByChainId(chainId);
   }
 
-  uint256[50] private __gap;
-
   /** @dev Examples of implementation for an ERC721:
 
   function wormholeTransfer(
@@ -69,4 +67,7 @@ abstract contract WormholeTunnelUpgradeable is
   }
 
   */
+
+  uint256[50] private __gap;
 }
+
