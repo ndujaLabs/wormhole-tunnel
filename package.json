@@ -1,6 +1,6 @@
 {
   "name": "@ndujalabs/wormhole-tunnel",
-  "version": "0.3.5",
+  "version": "0.4.0-beta.0",
   "description": "An implementation of Wormhole native protocol for generic transfers",
   "publishConfig": {
     "access": "public"
@@ -11,7 +11,8 @@
   "scripts": {
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
-    "lint": "prettier --write 'contracts/**/*.sol' && solhint 'contracts/**/*.sol'"
+    "lint": "prettier --write 'contracts/**/*.sol' && solhint 'contracts/**/*.sol'",
+    "format": "npx prettier --write 'test'/**/*.js"
   },
   "authors": [
     "Evan Gray <egray@jumptrading.com>",
