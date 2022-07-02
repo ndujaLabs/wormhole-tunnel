@@ -23,7 +23,6 @@ describe("#WormholeTunner", function () {
   });
 
   async function initAndDeploy() {
-
     wormhole = await WormholeMock.deploy();
     await wormhole.deployed();
 
@@ -40,7 +39,6 @@ describe("#WormholeTunner", function () {
 
     await bridgeableOnChain2.wormholeInit(4, wormhole.address);
     await bridgeableOnChain2.wormholeRegisterContract(2, bytes32Address(bridgeableOnChain1.address));
-
   }
 
   describe("integration test", async function () {
@@ -49,24 +47,17 @@ describe("#WormholeTunner", function () {
     });
 
     it("should manage the entire flow", async function () {
-      const tokenId = ethers.BigNumber.from('1')
-      await bridgeableOnChain1.mintNft(user1.address)
-      expect(await bridgeableOnChain1.ownerOf(1)).equal(user1.address)
+      const tokenId = ethers.BigNumber.from("1");
+      await bridgeableOnChain1.mintNft(user1.address);
+      expect(await bridgeableOnChain1.ownerOf(1)).equal(user1.address);
       await bridgeableOnChain1.connect(user1).wormholeTransfer(tokenId, 4, bytes32Address(user1.address), 1);
-      await assertThrowsMessage(
-          bridgeableOnChain1.ownerOf(1),
-          "ERC721: owner query for nonexistent token"
-      )
-      await assertThrowsMessage(
-          bridgeableOnChain2.ownerOf(1),
-         "ERC721: owner query for nonexistent token"
-      )
+      await assertThrowsMessage(bridgeableOnChain1.ownerOf(1), "ERC721: owner query for nonexistent token");
+      await assertThrowsMessage(bridgeableOnChain2.ownerOf(1), "ERC721: owner query for nonexistent token");
 
       const fakeEvm = await bridgeableOnChain1.getFakeEvm(user1.address, tokenId);
 
       await bridgeableOnChain2.wormholeCompleteTransfer(fakeEvm);
-      expect(await bridgeableOnChain2.ownerOf(1)).equal(user1.address)
-
+      expect(await bridgeableOnChain2.ownerOf(1)).equal(user1.address);
     });
   });
 });

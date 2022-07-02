@@ -8,6 +8,20 @@ Install with
 npm install @ndujalabs/wormhole-tunnel
 ```
 
+Most likely, you also have to explicit install the peer dependencies, like:
+``` 
+npm install @openzeppelin/contracts
+```
+or 
+``` 
+npm install @openzeppelin/contracts-upgradeable
+```
+
+## History
+
+**0.4.0**
+- make the contracts abstract to force the implementation of the two required functions.
+
 ## API
 
 coming soon...
