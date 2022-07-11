@@ -30,6 +30,17 @@ coming soon...
 
 Apache2
 
+## Authors
+
+Evan Gray <egray@jumptrading.com>
+Emanuele Cesena <ec@ndujalabs.com>
+Francesco Sullo <francesco@superpower.io>
+
+Package managed by Francesco Sullo
+
 ## Copyright
 
-Wormhole Tunnel comes from a collaboration between [Wormhole Network](https://wormholenetwork.com/), [Nduja Labs](https://ndujalabs.com) and [Superpower Labs](https://superpower.io) 
+Wormhole Tunnel comes from a collaboration between 
+* [Wormhole Network](https://wormholenetwork.com/)
+* [Nduja Labs](https://ndujalabs.com)
+* [Superpower Labs](https://superpower.io) 
