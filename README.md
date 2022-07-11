@@ -32,9 +32,9 @@ Apache2
 
 ## Authors
 
-Evan Gray <egray@jumptrading.com>
-Emanuele Cesena <ec@ndujalabs.com>
-Francesco Sullo <francesco@superpower.io>
+* Evan Gray <egray@jumptrading.com>
+* Emanuele Cesena <ec@ndujalabs.com>
+* Francesco Sullo <francesco@superpower.io>
 
 Package managed by Francesco Sullo
 
