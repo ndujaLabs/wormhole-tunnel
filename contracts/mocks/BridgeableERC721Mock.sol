@@ -51,7 +51,7 @@ contract BridgeableERC721Mock is ERC721, WormholeTunnel {
     _safeMint(to, payload);
   }
 
-  function getFakeEvm(address to, uint256 payload) public view returns (bytes memory) {
+  function getFakeEvm(address to, uint256 payload) public pure returns (bytes memory) {
     return abi.encode(to, payload);
   }
 }
