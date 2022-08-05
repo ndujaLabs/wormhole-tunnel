@@ -19,6 +19,9 @@ npm install @openzeppelin/contracts-upgradeable
 
 ## History
 
+**0.4.1**
+- remove compilation warning in a mock contract.
+
 **0.4.0**
 - make the contracts abstract to force the implementation of the two required functions.
 
