@@ -25,8 +25,6 @@ npm install @openzeppelin/contracts-upgradeable
 **0.4.0**
 - make the contracts abstract to force the implementation of the two required functions.
 
-## API
-
 ## Usage
 
 An example of implementation of this protocol in an ERC721:
