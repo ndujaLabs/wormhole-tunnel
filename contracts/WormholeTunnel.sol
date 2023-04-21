@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache2
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 import "./interfaces/IWormhole.sol";
@@ -12,7 +10,7 @@ import "./interfaces/IWormholeTunnel.sol";
 
 import "hardhat/console.sol";
 
-abstract contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, ERC165 {
+abstract contract WormholeTunnel is IWormholeTunnel, WormholeCommon, ERC165 {
   using BytesLib for bytes;
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -24,12 +22,12 @@ abstract contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pa
     return type(IWormholeTunnel).interfaceId;
   }
 
-  function wormholeInit(uint16 chainId, address wormhole) public override onlyOwner {
+  function _wormholeInit(uint16 chainId, address wormhole) internal {
     _setChainId(chainId);
     _setWormhole(wormhole);
   }
 
-  function wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) public override onlyOwner {
+  function _wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) internal {
     _setContract(chainId_, contractExtendedAddress);
   }
 
@@ -37,7 +35,17 @@ abstract contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pa
     return contractByChainId(chainId);
   }
 
-  /** @dev Examples of implementation for an ERC721:
+  /** @dev Example of implementation for an ERC721, using Ownable to
+           handle ownership and Pausable to handle pausing. The
+           following four functions MUST be implemented.
+
+  function wormholeInit(uint16 chainId, address wormhole) external override onlyOwner {
+    _wormholeInit(chainId, wormhole);
+  }
+
+  function wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) public override onlyOwner {
+    _wormholeRegisterContract(chainId_, contractExtendedAddress);
+  }
 
   function wormholeTransfer(
     uint256 payload,

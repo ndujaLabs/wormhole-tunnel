@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
+// SPDX-License-Identifier: Apache2
+pragma solidity ^0.8.0;
 
 // the goal of this mock is to allow testing.
 // We assume that the bridging is successful

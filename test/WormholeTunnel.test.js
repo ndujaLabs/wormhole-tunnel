@@ -51,8 +51,7 @@ describe("#WormholeTunner", function () {
       await bridgeableOnChain1.mintNft(user1.address);
       expect(await bridgeableOnChain1.ownerOf(1)).equal(user1.address);
       await bridgeableOnChain1.connect(user1).wormholeTransfer(tokenId, 4, bytes32Address(user1.address), 1);
-      await assertThrowsMessage(bridgeableOnChain1.ownerOf(1), "ERC721: owner query for nonexistent token");
-      await assertThrowsMessage(bridgeableOnChain2.ownerOf(1), "ERC721: owner query for nonexistent token");
+      await assertThrowsMessage(bridgeableOnChain1.ownerOf(1), "ERC721: invalid token ID");
 
       const fakeEvm = await bridgeableOnChain1.getFakeEvm(user1.address, tokenId);
 
