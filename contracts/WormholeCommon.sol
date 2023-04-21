@@ -64,6 +64,7 @@ contract WormholeCommon {
     (IWormhole.VM memory vm, bool valid, string memory reason) = wormhole().parseAndVerifyVM(encodedVm);
 
     require(valid, reason);
+
     require(_verifyContractVM(vm), "invalid emitter");
 
     WTransfer memory wTransfer = _parseTransfer(vm.payload);
@@ -86,7 +87,7 @@ contract WormholeCommon {
     uint32 nonce,
     uint256 value
   ) internal returns (uint64 sequence) {
-    require(contractByChainId(recipientChain) != 0, "ERC721: recipientChain not allowed");
+    require(contractByChainId(recipientChain) != 0, "recipientChain not allowed");
     sequence = _logTransfer(WTransfer({payload: payload, to: recipient, toChain: recipientChain}), value, nonce);
     return sequence;
   }

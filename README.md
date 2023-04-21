@@ -8,14 +8,24 @@ Install with
 npm install @ndujalabs/wormhole-tunnel
 ```
 
-Most likely, you also have to install OpenZeppelin contracts. You can do it with
-```
+Most likely, you also have to explicit install the peer dependencies, like:
+``` 
 npm install @openzeppelin/contracts
 ```
-or
-```
-npm install @openzeppelin/contracts-upgradeable
+or 
 ``` 
+npm install @openzeppelin/contracts-upgradeable
+```
+
+## History
+
+**0.4.1**
+- remove compilation warning in a mock contract.
+
+**0.4.0**
+- make the contracts abstract to force the implementation of the two required functions.
+
+## API
 
 ## Usage
 
@@ -93,6 +103,17 @@ contract BridgeableERC721 is ERC721, WormholeTunnel, Ownable, Pausable {
 
 Apache2
 
+## Authors
+
+* Evan Gray <egray@jumptrading.com>
+* Emanuele Cesena <ec@ndujalabs.com>
+* Francesco Sullo <francesco@superpower.io>
+
+Package managed by Francesco Sullo
+
 ## Copyright
 
-Wormhole Tunnel comes from a collaboration between [Wormhole Network](https://wormholenetwork.com/), [Nduja Labs](https://ndujalabs.com) and [Superpower Labs](https://superpower.io) 
+Wormhole Tunnel comes from a collaboration between 
+* [Wormhole Network](https://wormholenetwork.com/)
+* [Nduja Labs](https://ndujalabs.com)
+* [Superpower Labs](https://superpower.io) 

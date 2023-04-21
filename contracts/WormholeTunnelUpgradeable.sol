@@ -32,5 +32,37 @@ abstract contract WormholeTunnelUpgradeable is
     return contractByChainId(chainId);
   }
 
+  /** @dev Example of implementation for an ERC721, using OwnableUpgradeable to
+           handle ownership and PausableUpgradeable to handle pausing. The
+           following four functions MUST be implemented.
+
+  function wormholeInit(uint16 chainId, address wormhole) external override onlyOwner {
+    _wormholeInit(chainId, wormhole);
+  }
+
+  function wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) public override onlyOwner {
+    _wormholeRegisterContract(chainId_, contractExtendedAddress);
+  }
+
+  function wormholeTransfer(
+    uint256 payload,
+    uint16 recipientChain,
+    bytes32 recipient,
+    uint32 nonce
+  ) public payable virtual override whenNotPaused returns (uint64 sequence) {
+    require(owner(payload) == _msgSender(), "ERC721: transfer caller is not the owner");
+    _burn(payload);
+    return _wormholeTransferWithValue(payload, recipientChain, recipient, nonce, msg.value);
+  }
+
+  // Complete a transfer from Wormhole
+  function wormholeCompleteTransfer(bytes memory encodedVm) public virtual override {
+    (address to, uint256 payload) = _wormholeCompleteTransfer(encodedVm);
+    _safeMint(to, payload);
+  }
+
+  */
+
   uint256[50] private __gap;
 }
+

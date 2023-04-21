@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "../WormholeTunnel.sol";
 
-contract BridgeableERC721Mock is ERC721, WormholeTunnel, Ownable, Pausable {
+contract BridgeableERC721Mock is Ownable, Pausable, ERC721, WormholeTunnel {
   uint256 public nextTokenId = 1;
   bool public isOnPrimaryChain;
 
@@ -52,7 +52,7 @@ contract BridgeableERC721Mock is ERC721, WormholeTunnel, Ownable, Pausable {
     _safeMint(to, payload);
   }
 
-  function getFakeEvm(address to, uint256 payload) public view returns (bytes memory) {
+  function getFakeEvm(address to, uint256 payload) public pure returns (bytes memory) {
     return abi.encode(to, payload);
   }
 
