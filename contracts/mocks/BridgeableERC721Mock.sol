@@ -20,6 +20,10 @@ contract BridgeableERC721Mock is ERC721, WormholeTunnel, Ownable, Pausable {
     _wormholeInit(chainId, wormhole);
   }
 
+  function wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) public override onlyOwner {
+    _wormholeRegisterContract(chainId_, contractExtendedAddress);
+  }
+
   function supportsInterface(bytes4 interfaceId) public view override(WormholeTunnel, ERC721) returns (bool) {
     return super.supportsInterface(interfaceId);
   }
@@ -52,7 +56,4 @@ contract BridgeableERC721Mock is ERC721, WormholeTunnel, Ownable, Pausable {
     return abi.encode(to, payload);
   }
 
-  function wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) public override onlyOwner {
-    _wormholeRegisterContract(chainId_, contractExtendedAddress);
-  }
 }
