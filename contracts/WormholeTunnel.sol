@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache2
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 import "./interfaces/IWormhole.sol";
@@ -12,7 +10,7 @@ import "./interfaces/IWormholeTunnel.sol";
 
 import "hardhat/console.sol";
 
-contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, ERC165 {
+abstract contract WormholeTunnel is IWormholeTunnel, WormholeCommon, ERC165 {
   using BytesLib for bytes;
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -24,12 +22,12 @@ contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, E
     return type(IWormholeTunnel).interfaceId;
   }
 
-  function wormholeInit(uint16 chainId, address wormhole) public override onlyOwner {
+  function _wormholeInit(uint16 chainId, address wormhole) internal {
     _setChainId(chainId);
     _setWormhole(wormhole);
   }
 
-  function wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) public override onlyOwner {
+  function _wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) internal {
     _setContract(chainId_, contractExtendedAddress);
   }
 
@@ -37,26 +35,4 @@ contract WormholeTunnel is IWormholeTunnel, WormholeCommon, Ownable, Pausable, E
     return contractByChainId(chainId);
   }
 
-  function wormholeTransfer(
-    uint256 payload,
-    uint16 recipientChain,
-    bytes32 recipient,
-    uint32 nonce
-  ) public payable virtual override whenNotPaused returns (uint64 sequence) {
-    // do something here, before launching the transfer
-    // For example, for an ERC721, where payload is the tokenId, you can burn the token on the starting chain:
-    //    require(owner(payload) == _msgSender(), "ERC721: transfer caller is not the owner");
-    //    _burn(payload);
-    return _wormholeTransferWithValue(payload, recipientChain, recipient, nonce, msg.value);
-  }
-
-  // Complete a transfer from Wormhole
-  function wormholeCompleteTransfer(bytes memory encodedVm) public virtual override {
-    // solhint-disable-next-line
-    (address to, uint256 payload) = _wormholeCompleteTransfer(encodedVm);
-    // do something here, after receiving the transfer
-    // For example, with an ERC721, where payload is the tokenId,
-    // you mint a token on the receiving chain
-    //    _safeMint(to, payload);
-  }
 }

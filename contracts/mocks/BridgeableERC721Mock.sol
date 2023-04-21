@@ -7,21 +7,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "../WormholeTunnel.sol";
 
-contract BridgeableERC721Mock is ERC721, WormholeTunnel {
+contract BridgeableERC721Mock is ERC721, WormholeTunnel, Ownable, Pausable {
   uint256 public nextTokenId = 1;
   bool public isOnPrimaryChain;
 
   constructor(bool isOnPrimaryChain_) ERC721("Cross-chain NFT", "xNFT") {
-    // this should be launched only for the token on the primary chain
+    // this must be launched only for the token on the primary chain
     isOnPrimaryChain = isOnPrimaryChain_;
   }
 
-  //  function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-  //  internal
-  //  override(ERC721)
-  //  {
-  //    super._beforeTokenTransfer(from, to, tokenId);
-  //  }
+  function wormholeInit(uint16 chainId, address wormhole) external override onlyOwner {
+    _wormholeInit(chainId, wormhole);
+  }
 
   function supportsInterface(bytes4 interfaceId) public view override(WormholeTunnel, ERC721) returns (bool) {
     return super.supportsInterface(interfaceId);
@@ -53,5 +50,9 @@ contract BridgeableERC721Mock is ERC721, WormholeTunnel {
 
   function getFakeEvm(address to, uint256 payload) public view returns (bytes memory) {
     return abi.encode(to, payload);
+  }
+
+  function wormholeRegisterContract(uint16 chainId_, bytes32 contractExtendedAddress) public override onlyOwner {
+    _wormholeRegisterContract(chainId_, contractExtendedAddress);
   }
 }
